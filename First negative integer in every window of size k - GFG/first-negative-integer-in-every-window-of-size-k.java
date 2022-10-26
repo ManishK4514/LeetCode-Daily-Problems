@@ -48,22 +48,43 @@ class Compute {
     public long[] printFirstNegativeInteger(long arr[], int N, int k)
     {
         ArrayList<Long> res = new ArrayList<>();
-        for (int i = 0; i <= arr.length - k; i++) {
-            boolean flag = true;
-            for (int j = i; j < i + k; j++) {
-                if (arr[j] < 0) {
-                    flag = false;
-                    res.add((long) (arr[j]));
-                    break;
-                }
+        ArrayDeque<Long> list = new ArrayDeque<>();
+        boolean flag = true;
+        for(int i = 0; i < k; i++){
+            if(arr[i] < 0 && flag == true){
+                flag = false;
+                res.add(arr[i]);
             }
-            if (flag) {
-                res.add((long) (0));
+            if(arr[i] < 0){
+                list.add(arr[i]);
             }
         }
+        if(flag == true){
+            res.add((long)(0));
+        }
+        if(!list.isEmpty() && arr[0] == list.getFirst()){
+            list.removeFirst();
+        }
+        int i = 1;
+
+        for(int j = k; j < arr.length; j++){
+            if(arr[j] < 0){
+                list.add(arr[j]);
+            }
+            if(list.isEmpty()){
+                res.add((long)(0));
+            }
+            else{
+                res.add(list.getFirst());
+            }
+            if(!list.isEmpty() && arr[i] == list.getFirst()){
+                list.removeFirst();
+            }
+            i++;
+        }
         long[] ans = new long[res.size()];
-        for(int i = 0; i < res.size(); i++){
-            ans[i] = res.get(i);
+        for(int j = 0; j < res.size(); j++){
+            ans[j] = res.get(j);
         }
         return ans;
     }
