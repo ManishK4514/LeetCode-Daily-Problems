@@ -1,19 +1,10 @@
 class Solution {
     public int[] diStringMatch(String s) {
-        int[] res = new int[s.length() + 1];
-        int high = s.length();
-        int low = 0, k = 0;
-        for(int i = 0; i < s.length(); i++){
-            if(s.charAt(i) == 'D'){
-                res[k++] = high;
-                high--;
-            }
-            else{
-                res[k++] = low;
-                low++;
-            }
-        }
-        res[k++] = high;
+        int n = s.length(), left = 0, right = n;
+        int[] res = new int[n + 1];
+        for (int i = 0; i < n; ++i)
+            res[i] = s.charAt(i) == 'I' ? left++ : right--;
+        res[n] = left;
         return res;
     }
 }
