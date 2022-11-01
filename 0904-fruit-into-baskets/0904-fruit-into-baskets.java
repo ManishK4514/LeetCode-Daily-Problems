@@ -3,12 +3,7 @@ class Solution {
         HashMap<Integer, Integer> map = new HashMap<>();
         int i = 0, j = 0, ans = 0;
         while(j < fruits.length){
-            if(map.containsKey(fruits[j])){
-                map.put(fruits[j], map.get(fruits[j]) + 1);
-            }
-            else{
-                map.put(fruits[j], 1);
-            }
+            map.put(fruits[j], map.getOrDefault(fruits[j], 0) + 1);
             while(map.size() > 2){
                 map.put(fruits[i], map.get(fruits[i]) - 1);
                 if(map.get(fruits[i]) == 0){
