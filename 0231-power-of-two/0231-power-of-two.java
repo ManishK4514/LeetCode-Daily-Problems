@@ -1,13 +1,7 @@
 class Solution {
-    public boolean isPowerOfTwo(int n) {        
-        while(n > 0){
-            if(n == 1){
-              return true;
-            }
-            if((n&1) == 1){
-                return false;
-            }
-            n = n>>1;
+    public boolean isPowerOfTwo(int n) { 
+        if((n&n-1) == 0 && n > 0){
+            return true;
         }
         return false;
     }
