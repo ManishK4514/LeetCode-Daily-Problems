@@ -36,30 +36,32 @@ class Solution
 {
     public int[] twoOddNum(int nums[], int N)
     {
-        ArrayList<Integer> temp = new ArrayList<>();
-        HashMap<Integer, Integer> map = new HashMap<>();
+       int xor = 0;
         for(int i = 0; i < nums.length; i++){
-            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+            xor ^= nums[i];
         }
-        for(Map.Entry<Integer, Integer> entry: map.entrySet()){
-            if(entry.getValue() % 2 != 0){
-                temp.add(entry.getKey());
+        
+        int cnt = 0;
+        while(xor != 0){
+            if((xor&1) == 1){
+                break;
+            }
+            cnt++;
+            xor = xor>>1;
+        }
+
+        int xor1 = 0, xor2 = 0;
+        for(int i = 0; i < nums.length; i++){
+            if((nums[i]&(1<<cnt)) != 0){
+                xor1 ^= nums[i];
+            }
+            else{
+                xor2 ^= nums[i];
             }
         }
-        int[] arr = new int[2];
-        int j = 0;
-        HashSet<Integer> set = new HashSet<>();
-        for(int i = 0; i < nums.length; i++){
-            if(!set.contains(nums[i]) && temp.contains(nums[i])){
-                arr[j++] = nums[i];
-                set.add(nums[i]);
-            }
+        if(xor1 < xor2){
+             return new int[]{xor2, xor1};
         }
-        if(arr[0] < arr[1]){
-            int temp1 = arr[0];
-            arr[0] = arr[1];
-            arr[1] = temp1;
-        }
-        return arr;
+        return new int[]{xor1, xor2};
     }
 }
