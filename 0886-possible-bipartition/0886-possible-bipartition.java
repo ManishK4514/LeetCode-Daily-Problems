@@ -1,31 +1,36 @@
 class Solution {
-    public boolean possibleBipartition(int n, int[][] dislikes) {
-        int[] color = new int[n + 1];
-        List<Integer>[] graph = new List[n+1];
-        for(int i = 0; i < graph.length; i++){
-            graph[i] = new ArrayList<>();
+    public boolean possibleBipartition(int N, int[][] dislikes) {        
+        List<Integer>[] graph = new List[N + 1];  
+
+        for (int i = 1; i <= N; ++i) graph[i] = new ArrayList<>();        
+
+        for (int[] dislike : dislikes) {
+            graph[dislike[0]].add(dislike[1]);
+            graph[dislike[1]].add(dislike[0]);
         }
-        for(int[] v : dislikes){
-            graph[v[0]].add(v[1]);
-            graph[v[1]].add(v[0]);
-        }  
-        for(int i = 1; i <= n; i++){
-            if(color[i] == 0){
-                Queue<Integer> queue = new LinkedList<>();
-                queue.add(i);
-                while(queue.size() != 0){
-                    int top = queue.remove();
-                    color[i] = 1;
-                    for(int neighbour : graph[top]){
-                        if(color[neighbour] == color[top]) return false;
-                        if(color[neighbour] == 0){
-                            color[neighbour] = -color[top];
-                            queue.add(neighbour);
-                        }
-                    }
-                }
+
+        Integer[] colors = new Integer[N + 1];
+
+        for (int i = 1; i <= N; ++i) {
+            // If the connected component that node i belongs to hasn't been colored yet then try coloring it.
+            if (colors[i] == null && !dfs(graph, colors, i, 1)) return false;
+        }
+        return true;   
+    }
+
+    private boolean dfs(List<Integer>[] graph, Integer[] colors, int currNode, int currColor) {
+        colors[currNode] = currColor;
+
+        // Color all uncolored adjacent nodes.
+        for (Integer adjacentNode : graph[currNode]) {
+
+            if (colors[adjacentNode] == null) {
+                if (!dfs(graph, colors, adjacentNode, currColor * -1)) return false;     
+
+            } else if (colors[adjacentNode] == currColor) {
+                return false;                                     
             }
-        }      
-        return true;
+        }
+        return true;        
     }
 }
