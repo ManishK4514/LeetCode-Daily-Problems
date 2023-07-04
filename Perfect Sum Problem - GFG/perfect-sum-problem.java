@@ -26,10 +26,7 @@ class GfG
 
 
 class Solution{
-    public void reverseArray(int[] arr) {
-        int start = 0;
-        int end = arr.length - 1;
-    
+    public void reverseArray(int[] arr, int start, int end) {
         while (start < end) {
             int temp = arr[start];
             arr[start] = arr[end];
@@ -40,27 +37,31 @@ class Solution{
         }
     }
 	public int perfectSum(int[] arr,int n, int target) {
-	    if(arr[0] == 0) reverseArray(arr);
+	    if(arr[0] == 0) reverseArray(arr, 0, arr.length - 1);
 	    
 	    int mod = (int)(1e9 + 7);
-	    int[][] dp = new int[n][target + 1];
-	    for(int i = 0; i < n; i++) dp[i][0] = 1;
 	    
-	    if(arr[0] <= target) dp[0][arr[0]] = 1;
+	    int[] prev = new int [target + 1];
+	    int[] curr = new int[target + 1];
+	    
+	    prev[0] = curr[0] = 1;
+	    
+	    if(arr[0] <= target) prev[arr[0]] = 1;
 	    
 	    for(int i = 1; i < n; i++){
 	        for(int sum = 0; sum <= target; sum++){
 	            // take
 	            int take = 0;
-	            if(sum >= arr[i]) take = dp[i - 1][sum - arr[i]];
+	            if(sum >= arr[i]) take = prev[sum - arr[i]];
         
                 // notTake
-                int notTake = dp[i - 1][sum];
+                int notTake = prev[sum];
                 
-                dp[i][sum] = ((take % mod) + (notTake % mod)) % mod;
+                curr[sum] = ((take % mod) + (notTake % mod)) % mod;
 	        }
+	        prev = curr.clone();
 	    }
 	    
-	    return dp[n - 1][target] % mod;
+	    return prev[target] % mod;
 	} 
 }
