@@ -49,22 +49,22 @@ class gfg
 class Solution 
 { 
     //Function to return max value that can be put in knapsack of capacity W.
-    public static int helper(int idx, int[] val, int[] wt, int target, int[][] dp){
-        if(idx == 0) {
-            if(target >= wt[0]) return val[0];
+    public static int helper(int i, int[] val, int[] wt, int W, int[][] dp){
+        if(i == 0) {
+            if(W >= wt[0]) return val[0];
             return 0; 
         }
         
-        if(dp[idx][target] != -1) return dp[idx][target];
+        if(dp[i][W] != -1) return dp[i][W];
         
         // take
         int take = Integer.MIN_VALUE;
-        if(target >= wt[idx]) take = val[idx] + helper(idx - 1, val, wt, target - wt[idx], dp);
+        if(W >= wt[i]) take = val[i] + helper(i - 1, val, wt, W - wt[i], dp);
         
         // notTake
-        int notTake = helper(idx - 1, val, wt, target, dp);
+        int notTake = helper(i - 1, val, wt, W, dp);
         
-        return dp[idx][target] = Math.max(take, notTake);
+        return dp[i][W] = Math.max(take, notTake);
     }
     static int knapSack(int W, int wt[], int val[], int n) 
     { 
