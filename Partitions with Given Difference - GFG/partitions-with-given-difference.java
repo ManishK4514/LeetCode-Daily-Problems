@@ -40,25 +40,27 @@ class Solution{
         
         int targetSum = (totalSum - d)/2;
         
-        int[][] dp = new int[n][targetSum + 1];
+        int[] prev = new int[targetSum + 1];
+        int[] curr = new int[targetSum + 1];
         
-        if(arr[0] == 0) dp[0][0] = 2;
-        else dp[0][0] = 1;
+        if(arr[0] == 0) prev[0] = 2;
+        else prev[0] = 1;
         
-        if(arr[0] != 0 && arr[0] <= targetSum) dp[0][arr[0]] = 1;
+        if(arr[0] != 0 && arr[0] <= targetSum) prev[arr[0]] = 1;
         
         for(int i = 1; i < n; i++){
             for(int sum = 0; sum <= targetSum; sum++){
                 // take
                 int take = 0;
-                if(sum >= arr[i]) take = dp[i - 1][sum - arr[i]];
+                if(sum >= arr[i]) take = prev[sum - arr[i]];
                 
                 // not take
-                int notTake = dp[i - 1][sum];
+                int notTake = prev[sum];
                 
-                dp[i][sum] =  (take + notTake) % mod;
+                curr[sum] =  (take + notTake) % mod;
             }
+            prev = curr.clone();
         }
-        return dp[n - 1][targetSum];
+        return prev[targetSum];
     }
 }
