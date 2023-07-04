@@ -49,43 +49,29 @@ class gfg
 class Solution 
 { 
     //Function to return max value that can be put in knapsack of capacity W.
-    public static int helper(int i, int[] val, int[] wt, int W, int[][] dp){
-        if(i == 0) {
-            if(W >= wt[0]) return val[0];
-            return 0; 
-        }
-        
-        if(dp[i][W] != -1) return dp[i][W];
-        
-        // take
-        int take = Integer.MIN_VALUE;
-        if(W >= wt[i]) take = val[i] + helper(i - 1, val, wt, W - wt[i], dp);
-        
-        // notTake
-        int notTake = helper(i - 1, val, wt, W, dp);
-        
-        return dp[i][W] = Math.max(take, notTake);
-    }
+    
     public static int knapSack(int W, int wt[], int val[], int n){ 
-        int[][] dp = new int[n][W + 1];
+        int[] prev = new int[W + 1];
+        int[] curr = new int[W + 1];
         
         for(int i = wt[0]; i <= W; i++){
-            dp[0][i] = val[0];
+            prev[i] = val[0];
         }
     
         for(int i = 1; i < n; i++){
             for(int cap = 0; cap <= W; cap++){
                 // take
                 int take = Integer.MIN_VALUE;
-                if(cap >= wt[i]) take = val[i] + dp[i - 1][cap - wt[i]];
+                if(cap >= wt[i]) take = val[i] + prev[cap - wt[i]];
                 
                 // notTake
-                int notTake = dp[i - 1][cap];
+                int notTake = prev[cap];
                 
-                dp[i][cap] = Math.max(take, notTake);
+                curr[cap] = Math.max(take, notTake);
             }
+            prev = curr.clone();
         }
-        return dp[n - 1][W];
+        return prev[W];
     } 
 }
 
