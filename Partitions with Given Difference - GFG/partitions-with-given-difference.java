@@ -35,8 +35,9 @@ class Solution{
     int mod = (int) (1e9 + 7);
     public int helper(int i, int targetSum, int[] arr, int[][] dp){
         // base case
-        if(i < 0){
-            if(targetSum == 0) return 1;
+        if(i == 0){
+            if(targetSum == 0 && arr[0] == 0) return 2;
+            if(targetSum == arr[i] || targetSum == 0) return 1;
             return 0;
         }
         
