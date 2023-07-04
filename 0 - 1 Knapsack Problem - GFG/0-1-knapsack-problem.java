@@ -66,8 +66,7 @@ class Solution
         
         return dp[i][W] = Math.max(take, notTake);
     }
-    static int knapSack(int W, int wt[], int val[], int n) 
-    { 
+    public static int knapSack(int W, int wt[], int val[], int n){ 
         int[][] dp = new int[n][W + 1];
         
         for(int i = wt[0]; i <= W; i++){
