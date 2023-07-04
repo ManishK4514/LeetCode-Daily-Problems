@@ -69,8 +69,24 @@ class Solution
     static int knapSack(int W, int wt[], int val[], int n) 
     { 
         int[][] dp = new int[n][W + 1];
-        for(int[] it : dp) Arrays.fill(it, -1);
-        return helper(n - 1, val, wt, W, dp);
+        
+        for(int i = wt[0]; i <= W; i++){
+            dp[0][i] = val[0];
+        }
+    
+        for(int i = 1; i < n; i++){
+            for(int cap = 0; cap <= W; cap++){
+                // take
+                int take = Integer.MIN_VALUE;
+                if(cap >= wt[i]) take = val[i] + dp[i - 1][cap - wt[i]];
+                
+                // notTake
+                int notTake = dp[i - 1][cap];
+                
+                dp[i][cap] = Math.max(take, notTake);
+            }
+        }
+        return dp[n - 1][W];
     } 
 }
 
