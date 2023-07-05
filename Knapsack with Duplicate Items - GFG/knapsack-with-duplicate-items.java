@@ -34,24 +34,26 @@ class GFG{
 
 class Solution {
     public static int knapSack(int N, int W, int val[], int wt[]) {
-        int[][] dp = new int[N][W + 1];
+        int[] prev = new int[W + 1];
+        int[] curr = new int[W + 1];
         
         for(int i = wt[0]; i <= W; i++){
-            dp[0][i] = ((int) i/wt[0]) * val[0];
+            prev[i] = ((int) i/wt[0]) * val[0];
         }
         
         for(int i = 1; i < N; i++){
             for(int cap = 0; cap <= W; cap++){
                 // take
                 int take = Integer.MIN_VALUE;
-                if(wt[i] <= cap) take = val[i] + dp[i][cap - wt[i]];
+                if(wt[i] <= cap) take = val[i] + curr[cap - wt[i]];
                 
                 // not take
-                int notTake = dp[i - 1][cap];
+                int notTake = prev[cap];
                 
-                dp[i][cap] = Math.max(take, notTake);
+                curr[cap] = Math.max(take, notTake);
             }
+            prev = curr.clone();
         }
-        return dp[N - 1][W];
+        return prev[W];
     }
 }
