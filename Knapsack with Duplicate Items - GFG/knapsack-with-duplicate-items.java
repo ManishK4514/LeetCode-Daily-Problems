@@ -32,27 +32,26 @@ class GFG{
 
 //User function Template for Java
 
-class Solution{
-    public static int helper(int i, int[] val, int[] wt, int W, int[][] dp){
-        // base case
-        if(i == 0) return (W/(wt[0])) * val[0];
-        
-        if(dp[i][W] != -1) return dp[i][W];
-        
-        // take
-        int take = Integer.MIN_VALUE;
-        if(wt[i] <= W) take = val[i] + helper(i, val, wt, W - wt[i], dp);
-        
-        // not take
-        int notTake = helper(i - 1, val, wt, W, dp);
-        
-        return dp[i][W] = Math.max(take, notTake);
-    }
-    
+class Solution {
     public static int knapSack(int N, int W, int val[], int wt[]) {
         int[][] dp = new int[N][W + 1];
-        for(int[] it : dp) Arrays.fill(it, -1);
-        int ans = helper(N - 1, val, wt, W, dp);
-        return ans == Integer.MIN_VALUE ? 0 : ans;
+        
+        for(int i = wt[0]; i <= W; i++){
+            dp[0][i] = ((int) i/wt[0]) * val[0];
+        }
+        
+        for(int i = 1; i < N; i++){
+            for(int cap = 0; cap <= W; cap++){
+                // take
+                int take = Integer.MIN_VALUE;
+                if(wt[i] <= cap) take = val[i] + dp[i][cap - wt[i]];
+                
+                // not take
+                int notTake = dp[i - 1][cap];
+                
+                dp[i][cap] = Math.max(take, notTake);
+            }
+        }
+        return dp[N - 1][W];
     }
 }
