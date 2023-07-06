@@ -27,11 +27,10 @@ class RodCutting {
 
 class Solution{
     public int cutRod(int price[], int n) {
-        int[] prev = new int[n + 1];
         int[] curr = new int[n + 1];
         
         for(int i = 0; i <= n; i++){
-            prev[i] = i * price[0];
+            curr[i] = i * price[0];
         }
         
         for(int i = 1; i < n; i++){
@@ -41,13 +40,12 @@ class Solution{
                 if(i + 1 <= length) take = price[i] + curr[length - (i + 1)];
                 
                 // not take
-                int notTake = prev[length];
+                int notTake = curr[length];
                 
                 curr[length] = Math.max(take, notTake);
             }
-            prev = curr.clone();
         }
         
-        return prev[n];
+        return curr[n];
     }   
 }
