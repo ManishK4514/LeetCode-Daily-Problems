@@ -27,25 +27,27 @@ class RodCutting {
 
 class Solution{
     public int cutRod(int price[], int n) {
-        int[][] dp = new int[n][n + 1];
+        int[] prev = new int[n + 1];
+        int[] curr = new int[n + 1];
         
         for(int i = 0; i <= n; i++){
-            dp[0][i] = i * price[0];
+            prev[i] = i * price[0];
         }
         
         for(int i = 1; i < n; i++){
             for(int length = 0; length <= n; length++){
                 // take
                 int take = Integer.MIN_VALUE;
-                if(i + 1 <= length) take = price[i] + dp[i][length - (i + 1)];
+                if(i + 1 <= length) take = price[i] + curr[length - (i + 1)];
                 
                 // not take
-                int notTake = dp[i - 1][length];
+                int notTake = prev[length];
                 
-                dp[i][length] = Math.max(take, notTake);
+                curr[length] = Math.max(take, notTake);
             }
+            prev = curr.clone();
         }
         
-        return dp[n - 1][n];
+        return prev[n];
     }   
 }
