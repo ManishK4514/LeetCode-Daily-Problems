@@ -26,25 +26,26 @@ class RodCutting {
 
 
 class Solution{
-    public int helper(int[] price, int i, int n, int[][] dp){
-        // base case
-        if(i == 0) return n * price[0];
-        
-        if(dp[i][n] != -1) return dp[i][n];
-        
-        // take
-        int a = Integer.MIN_VALUE;
-        if(i + 1 <= n) a = price[i] + helper(price, i, n - (i + 1), dp);
-        
-        // not take
-        int b = 0 + helper(price, i - 1, n, dp);
-        
-        return dp[i][n] = Math.max(a, b);
-    }
-    
     public int cutRod(int price[], int n) {
         int[][] dp = new int[n][n + 1];
-        for(int[] it : dp) Arrays.fill(it, -1);
-        return helper(price, n - 1, n, dp);
+        
+        for(int i = 0; i <= n; i++){
+            dp[0][i] = i * price[0];
+        }
+        
+        for(int i = 1; i < n; i++){
+            for(int length = 0; length <= n; length++){
+                // take
+                int take = Integer.MIN_VALUE;
+                if(i + 1 <= length) take = price[i] + dp[i][length - (i + 1)];
+                
+                // not take
+                int notTake = dp[i - 1][length];
+                
+                dp[i][length] = Math.max(take, notTake);
+            }
+        }
+        
+        return dp[n - 1][n];
     }   
 }
