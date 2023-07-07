@@ -59,7 +59,6 @@ class Solution
     {
         int len = (n + m);
         int gap = (len/2) + (len % 2);
-        int count = 0;
         while(gap > 0){
             int left = 0;
             int right = left + gap;
@@ -79,12 +78,8 @@ class Solution
                 }
                 left++; right++;
             }
-            // System.out.println(gap);
-            // System.out.print(Arrays.toString(arr1));
-            // System.out.println(Arrays.toString(arr2));
-            gap = (int) Math.ceil(gap/2.0);
-            if(gap == 1) count++;
-            if(count == 2) break;
+            if(gap == 1) break;
+            gap = (gap/2) + (gap % 2);
         }
     }
 }
