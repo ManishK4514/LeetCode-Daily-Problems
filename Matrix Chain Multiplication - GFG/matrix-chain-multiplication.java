@@ -29,23 +29,26 @@ class GFG
 //User function Template for Java
 
 class Solution{
-    public static int helper(int i, int j, int[] arr, int[][] dp){
-        if(i == j) return 0;
-        int min = (int)(1e9);
-        
-        if(dp[i][j] != -1) return dp[i][j];
-        
-        for(int k = i; k < j; k++){
-            int steps = arr[i - 1] * arr[k] * arr[j] + helper(i, k, arr, dp) + helper(k + 1, j, arr, dp);
-            min = Math.min(min, steps);
-        }
-        
-        return dp[i][j] = min;
-    }
     static int matrixMultiplication(int N, int arr[])
     {
         int[][] dp = new int[N][N];
-        for(int[] it : dp) Arrays.fill(it, -1);
-        return helper(1, N - 1, arr, dp);
+        
+        // base case: we can skip also as dp is intially filled with zeros
+        for(int i = 0; i < N; i++) dp[i][i] = 0;
+        
+        for(int i = N - 1; i >= 1; i--){
+            for(int j = i + 1; j <= N - 1; j++){
+                int min = (int)(1e9);
+                
+                for(int k = i; k < j; k++){
+                    int steps = arr[i - 1] * arr[k] * arr[j] + dp[i][k] + dp[k + 1][j];
+                    min = Math.min(min, steps);
+                }
+                
+                dp[i][j] = min;
+            }
+        }
+        
+        return dp[1][N - 1];
     }
 }
