@@ -35,43 +35,41 @@ class Solution
     public int LongestBitonicSequence(int[] nums)
     {
         int n = nums.length;
-        int[] lis = new int[n];
-        int[] lds = new int[n];
-        Arrays.fill(lis, 1);
-        Arrays.fill(lds, 1);
+        int[] dp1 = new int[n];
+        Arrays.fill(dp1, 1);
 
         for(int i = 0; i < n; i++){
             for(int prevIdx = 0; prevIdx < i; prevIdx++){
                 
-                if(nums[i] > nums[prevIdx] && lis[i] < lis[prevIdx] + 1){
-                    lis[i] = lis[prevIdx] + 1;
+                if(nums[i] > nums[prevIdx] && dp1[i] < dp1[prevIdx] + 1){
+                    dp1[i] = dp1[prevIdx] + 1;
                 }
             }
         }
         
+        int[] dp2 = new int[n];
+        Arrays.fill(dp2, 1);
+        
         for(int i = n - 1; i >= 0; i--){
             for(int prevIdx = n - 1; prevIdx > i; prevIdx--){
                 
-                if(nums[i] > nums[prevIdx] && lds[i] < lds[prevIdx] + 1){
-                    lds[i] = lds[prevIdx] + 1;
+                if(nums[i] > nums[prevIdx] && dp2[i] < dp2[prevIdx] + 1){
+                    dp2[i] = dp2[prevIdx] + 1;
                 }
             }
         }
         
         int max = 1;
         
-        // System.out.println(Arrays.toString(lis));
-        // System.out.println(Arrays.toString(lds));
-        
         for(int i = 0; i < n - 1; i++){
             for(int j = i + 1; j < n; j++){
                 if(nums[i] > nums[j]){
-                     max = Math.max(max, lis[i] + lds[j]);
+                     max = Math.max(max, dp1[i] + dp2[j]);
                  }
             }
         }
         
-        max = Math.max(max, Math.max(lis[n - 1], lds[0]));
+        max = Math.max(max, Math.max(dp1[n - 1], dp2[0]));
         
         return max;
     }
