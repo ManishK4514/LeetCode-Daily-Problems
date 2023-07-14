@@ -32,8 +32,7 @@ class GFG
 
 class Solution
 {
-    public int LongestBitonicSequence(int[] nums)
-    {
+    public int LongestBitonicSequence(int[] nums) {
         int n = nums.length;
         int[] dp1 = new int[n];
         Arrays.fill(dp1, 1);
@@ -61,15 +60,9 @@ class Solution
         
         int max = 1;
         
-        for(int i = 0; i < n - 1; i++){
-            for(int j = i + 1; j < n; j++){
-                if(nums[i] > nums[j]){
-                     max = Math.max(max, dp1[i] + dp2[j]);
-                 }
-            }
+        for(int i = 0; i < n; i++){
+            max = Math.max(max, dp1[i] + dp2[i] - 1);
         }
-        
-        max = Math.max(max, Math.max(dp1[n - 1], dp2[0]));
         
         return max;
     }
