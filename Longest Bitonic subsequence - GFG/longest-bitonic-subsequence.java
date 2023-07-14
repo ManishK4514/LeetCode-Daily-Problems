@@ -49,6 +49,8 @@ class Solution
         int[] dp2 = new int[n];
         Arrays.fill(dp2, 1);
         
+        int max = 1;
+        
         for(int i = n - 1; i >= 0; i--){
             for(int prevIdx = n - 1; prevIdx > i; prevIdx--){
                 
@@ -56,11 +58,6 @@ class Solution
                     dp2[i] = dp2[prevIdx] + 1;
                 }
             }
-        }
-        
-        int max = 1;
-        
-        for(int i = 0; i < n; i++){
             max = Math.max(max, dp1[i] + dp2[i] - 1);
         }
         
