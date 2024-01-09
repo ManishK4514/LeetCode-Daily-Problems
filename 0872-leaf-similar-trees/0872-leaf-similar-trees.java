@@ -14,17 +14,26 @@
  * }
  */
 class Solution {
-    public void findLeaf(TreeNode root, ArrayList<Integer> res){
+    boolean isMatching = false;
+    boolean isSimilar = true;
+    int idx = 0;
+    public void preorder(TreeNode root, ArrayList<Integer> ls) {
         if(root == null) return;
-        if(root.left == null && root.right == null) res.add(root.val);
-        findLeaf(root.left, res);
-        findLeaf(root.right, res);
+        
+        if(isMatching && root.left == null && root.right == null) {
+            if(idx >= ls.size()) isSimilar = false;
+            else if(ls.get(idx++) != root.val) isSimilar = false;
+        }
+        else if(root.left == null && root.right == null) ls.add(root.val);
+
+        preorder(root.left, ls);
+        preorder(root.right, ls);
     }
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
-        ArrayList<Integer> arr1 = new ArrayList<>();
-        ArrayList<Integer> arr2 = new ArrayList<>();
-        findLeaf(root1, arr1);
-        findLeaf(root2, arr2);
-        return arr1.equals(arr2);
+        ArrayList<Integer> ls = new ArrayList<>();
+        preorder(root1, ls);
+        isMatching = true;
+        preorder(root2, ls);
+        return isSimilar && idx == ls.size();
     }
 }
