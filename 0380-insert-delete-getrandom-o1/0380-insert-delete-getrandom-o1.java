@@ -1,6 +1,7 @@
 class RandomizedSet {
     HashMap<Integer, Integer> map = new HashMap<>();
     ArrayList<Integer> arr = new ArrayList<>();
+    java.util.Random rand = new java.util.Random();
     public RandomizedSet() {
         
     }
@@ -29,10 +30,7 @@ class RandomizedSet {
         else return false;
     }
     public int getRandom() {
-        int min = 1;
-        int max = 1000;
-        int index = (int)(Math.random() * (max - min + 1) + min) % arr.size();
-        return arr.get(index);
+        return arr.get(rand.nextInt(arr.size()));
     }
 }
 
