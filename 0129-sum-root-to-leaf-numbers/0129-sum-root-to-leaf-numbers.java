@@ -1,31 +1,15 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
-    int ans = 0;
-    public void inorder(TreeNode root, int num){
-        if(root == null) return;
-        if(root.left == null && root.right == null){
-            ans += (num * 10 + root.val);
-            return;
-        }
-        inorder(root.left, num * 10 + root.val);
-        inorder(root.right, num * 10 + root.val);
+    public int helper(TreeNode root, int value) {
+        if(root == null) return 0;
+
+        if(root.left == null && root.right == null) return value * 10 + root.val;
+
+        int l = helper(root.left, value * 10 + root.val);
+        int r = helper(root.right, value * 10 + root.val);
+
+        return l + r;
     }
     public int sumNumbers(TreeNode root) {
-        inorder(root, 0);
-        return ans;
+        return helper(root, 0);
     }
 }
