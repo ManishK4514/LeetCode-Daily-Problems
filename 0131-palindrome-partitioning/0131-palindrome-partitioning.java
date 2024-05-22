@@ -1,29 +1,30 @@
 class Solution {
-    public List<List<String>> partition(String s) {
-        List<List<String>> res = new ArrayList<>();
-        List<String> path = new ArrayList<>();
-        func(0, s, path, res);
-        return res;
-    }
-    public static void func(int index, String s, List<String> path, List<List<String>> res){
-        if(index == s.length()){
-            res.add(new ArrayList<>(path));
-            return;
-        }
-        for(int i = index; i < s.length(); i++){
-            if(isPalindrome(s, index, i)){
-                path.add(s.substring(index, i + 1));
-                func(i + 1, s, path, res);
-                path.remove(path.size() - 1);
-            }
-        }
-    }
-    static boolean isPalindrome(String s, int start, int end){
-        while(start <= end){
-            if(s.charAt(start++) != s.charAt(end--)){
-                return false;
-            }
+    public boolean isPalindrome(int l, int r, String s) {
+        while(l < r) {
+            if(s.charAt(l) != s.charAt(r)) return false;
+            l++; r--;
         }
         return true;
+    }
+
+    public void helper(int i, String s, List<List<String>> ans, List<String> palindrome) {
+        if(i == s.length()) {
+            ans.add(new LinkedList<>(palindrome));
+            return;
+        } 
+
+        for(int j = i; j < s.length(); j++) {
+            if(isPalindrome(i, j, s)) {
+                palindrome.add(s.substring(i, j + 1));
+                helper(j + 1, s, ans, palindrome);
+                palindrome.remove(palindrome.size() - 1);
+            }
+        }
+    }
+
+    public List<List<String>> partition(String s) {
+        List<List<String>> ans = new LinkedList<>();
+        helper(0, s, ans, new LinkedList<>());
+        return ans;
     }
 }
