@@ -1,37 +1,33 @@
-class Pair{
-    int first;
-    int second;
-    Pair(int first, int second){
-        this.first = first;
-        this.second = second;
-    }
-}
 class Solution {
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
         int n = profits.length;
-        Pair[] arr = new Pair[n];
-        for(int i = 0; i < n; i++){
-            arr[i] = new Pair(profits[i], capital[i]);
+        int[][] nums = new int[n][2];
+
+        for(int i = 0; i < n; i++) {
+            nums[i] = new int[]{profits[i], capital[i]};
         }
-        Arrays.sort(arr, (a, b)->{
-            if(a.second != b.second){
-                return a.second - b.second;
-            }
-            return b.first - a.first;
+
+        Arrays.sort(nums, (a, b)->{
+            return a[1] - b[1];
         });
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b)->{
-            return b.first - a.first;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b)->{
+            return b[0] - a[0];
         });
+
         int i = 0;
-        while(k-->0){
-            while(i < n && arr[i].second <= w){
-                pq.add(new Pair(arr[i].first, arr[i].second));  
+
+        while(k-->0) {
+            while(i < n && nums[i][1] <= w) {
+                pq.add(nums[i]);
                 i++;
-            }
+            } 
             if(!pq.isEmpty()) {
-                w += pq.remove().first;
+                int[] curr = pq.remove();
+                w += curr[0];
             }
         }
+        
         return w;
     }
 }
