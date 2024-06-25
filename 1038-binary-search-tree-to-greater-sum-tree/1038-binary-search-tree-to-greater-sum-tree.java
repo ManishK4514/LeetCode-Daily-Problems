@@ -13,17 +13,15 @@
  *     }
  * }
  */
+ 
 class Solution {
-    public int convertToGst(TreeNode root, int sum) {
-        if(root == null) return 0;
-        int rootVal = root.val;
-        int right = convertToGst(root.right, sum);
-        root.val = sum + right + root.val;
-        int left = convertToGst(root.left, root.val);
-        return rootVal + left + right;
-    }
+    int sum = 0;
     public TreeNode bstToGst(TreeNode root) {
-        convertToGst(root, 0);
+        if(root == null) return null;
+        bstToGst(root.right);
+        sum += root.val;
+        root.val = sum;
+        bstToGst(root.left);
         return root;
     }
 }
