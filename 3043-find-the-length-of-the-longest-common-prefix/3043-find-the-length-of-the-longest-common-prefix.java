@@ -9,8 +9,6 @@ class Solution {
             }
         }
 
-        System.out.println(set);
-
         int len = 0;
 
         for(int y : arr2) {
