@@ -1,26 +1,29 @@
-class Solution { 
-    public boolean equal(int[] mp1, int[] mp2){
-        for(int i = 0; i < 26; i++){
-            if(mp1[i] != mp2[i]) return false;
-        }
+class Solution {
+    public boolean isValid(int[] map1, int[] map2) {
+        for(int i = 0; i < 26; i++) if(map1[i] != map2[i]) return false;
         return true;
     }
     public boolean checkInclusion(String s1, String s2) {
-        if(s1.length() > s2.length()) return false;
-        int[] mp1 = new int[26];
-        int[] mp2 = new int[26];
-        int l = 0, r = 0, len = s1.length();
-        while(r < len){
-            mp1[s1.charAt(r) - 'a']++;
-            mp2[s2.charAt(r) - 'a']++;
-            r++;
-        }
-        if(equal(mp1, mp2)) return true;
-        while(r < s2.length()){
-            mp2[s2.charAt(r) - 'a']++;
-            mp2[s2.charAt(l) - 'a']--;
-            if(equal(mp1, mp2)) return true;
-            r++; l++;
+        int n = s1.length(), m = s2.length(), l = 0;
+        int[] map1 = new int[26];
+        int[] map2 = new int[26];
+
+        if(n > m) return false;
+
+        for(int r = 0; r < m; r++){
+            if(r < n) {
+                char ch1 = s1.charAt(r);
+                map1[ch1 - 'a']++;                
+            }
+            
+            char ch2 = s2.charAt(r);
+            map2[ch2 - 'a']++;
+            
+            if(r >= n - 1) {
+                if(isValid(map1, map2)) return true;
+                char toRemove = s2.charAt(l++);
+                map2[toRemove - 'a']--;   
+            }
         }
         return false;
     }
