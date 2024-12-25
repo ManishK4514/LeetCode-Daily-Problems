@@ -14,28 +14,18 @@
  * }
  */
 class Solution {
-    public List<Integer> largestValues(TreeNode root) {
-        List<Integer> ls = new ArrayList<>();
-
-        if(root == null) return ls;
+    private void helper(TreeNode root, List<Integer> res, int d){
+        if(root == null) return;
         
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
+        if(d == res.size()) res.add(root.val);
+        else res.set(d, Math.max(res.get(d), root.val));
 
-        while(!q.isEmpty()) {
-            int size = q.size(), max = Integer.MIN_VALUE;
-     
-            for(int i = 0; i < size; i++) {
-                TreeNode curr = q.remove();
-                max = Math.max(max, curr.val);
-
-                if(curr.left != null) q.add(curr.left);
-                if(curr.right != null) q.add(curr.right);
-            }
-
-            ls.add(max);
-        }
-        
-        return ls;
+        helper(root.left, res, d+1);
+        helper(root.right, res, d+1);
     }
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> res = new ArrayList<Integer>();
+        helper(root, res, 0);
+        return res;
+    }    
 }
